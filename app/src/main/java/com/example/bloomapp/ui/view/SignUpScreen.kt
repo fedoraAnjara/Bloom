@@ -23,14 +23,15 @@ import com.example.bloomapp.ui.theme.grey
 import com.example.bloomapp.ui.viewmodel.AuthViewModel
 
 @Composable
-fun LoginScreen(
-    onSignUpClick: () -> Unit = {},
-    onLoginSuccess: () -> Unit = {},
+fun SignUpScreen(
+    onSignInClick: () -> Unit = {},
+    onSignUpSuccess: () -> Unit = {},
     viewModel: AuthViewModel = viewModel()
 ) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
 
@@ -51,7 +52,7 @@ fun LoginScreen(
 
         Spacer(Modifier.height(30.dp))
 
-        /** ----- Onglet Sign In + Sign Up ----- **/
+        /** Onglets **/
         Box(
             modifier = Modifier
                 .width(350.dp)
@@ -67,26 +68,22 @@ fun LoginScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                // Sign In (active)
+                // Sign In
                 Button(
-                    onClick = { /* déjà sur login */ },
+                    onClick = onSignInClick,
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = green
-                    )
+                    colors = ButtonDefaults.buttonColors(containerColor = grey)
                 ) {
                     Text("Sign In", color = black)
                 }
 
-                // Sign Up (navigue vers SignUpScreen)
+                // Sign Up active
                 Button(
-                    onClick = onSignUpClick,
+                    onClick = { /* déjà ici */ },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = grey
-                    )
+                    colors = ButtonDefaults.buttonColors(containerColor = green)
                 ) {
                     Text("Sign Up", color = black)
                 }
@@ -142,24 +139,50 @@ fun LoginScreen(
             enabled = !isLoading
         )
 
+        Spacer(Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = {
+                confirmPassword = it
+                errorMessage = ""
+            },
+            label = { Text("Confirm Password") },
+            singleLine = true,
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !isLoading
+        )
+
         Spacer(Modifier.height(26.dp))
 
         Button(
             onClick = {
-                if (email.isBlank() || password.isBlank()) {
-                    errorMessage = "Veuillez remplir tous les champs"
-                    return@Button
+                // Validation des champs
+                when {
+                    email.isBlank() || password.isBlank() || confirmPassword.isBlank() -> {
+                        errorMessage = "Veuillez remplir tous les champs"
+                        return@Button
+                    }
+                    password != confirmPassword -> {
+                        errorMessage = "Les mots de passe ne correspondent pas"
+                        return@Button
+                    }
+                    password.length < 6 -> {
+                        errorMessage = "Le mot de passe doit contenir au moins 6 caractères"
+                        return@Button
+                    }
                 }
 
                 isLoading = true
                 errorMessage = ""
 
-                viewModel.login(
+                viewModel.signUp(
                     email = email,
                     password = password,
                     onSuccess = {
                         isLoading = false
-                        onLoginSuccess()
+                        onSignUpSuccess()
                     },
                     onError = { error ->
                         isLoading = false
@@ -180,38 +203,8 @@ fun LoginScreen(
                     color = black
                 )
             } else {
-                Text("Sign In", color = black)
+                Text("Sign Up", color = black)
             }
-        }
-
-        Spacer(Modifier.height(26.dp))
-
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Divider(Modifier.weight(1f))
-            Text("  OR  ")
-            Divider(Modifier.weight(1f))
-        }
-
-        Spacer(Modifier.height(24.dp))
-
-        OutlinedButton(
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(10.dp),
-            enabled = !isLoading
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.google),
-                contentDescription = "Google icon",
-                tint = black
-            )
-            Spacer(Modifier.width(8.dp))
-            Text("Continue with Google")
         }
     }
 }
