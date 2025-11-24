@@ -21,11 +21,13 @@ import com.example.bloomapp.ui.theme.black
 import com.example.bloomapp.ui.theme.green
 import com.example.bloomapp.ui.theme.grey
 import com.example.bloomapp.ui.viewmodel.AuthViewModel
+import com.example.ui.components.GoogleButton
 
 @Composable
 fun SignUpScreen(
     onSignInClick: () -> Unit = {},
     onSignUpSuccess: () -> Unit = {},
+    onGoogleClick: () -> Unit = {},
     viewModel: AuthViewModel = viewModel()
 ) {
 
@@ -206,5 +208,9 @@ fun SignUpScreen(
                 Text("Sign Up", color = black)
             }
         }
+        GoogleButton(
+            enabled = !isLoading,
+            onClick = onGoogleClick
+        )
     }
 }

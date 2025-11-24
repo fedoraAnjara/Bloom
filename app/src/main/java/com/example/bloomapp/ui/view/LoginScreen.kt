@@ -21,11 +21,13 @@ import com.example.bloomapp.ui.theme.black
 import com.example.bloomapp.ui.theme.green
 import com.example.bloomapp.ui.theme.grey
 import com.example.bloomapp.ui.viewmodel.AuthViewModel
+import com.example.ui.components.GoogleButton
 
 @Composable
 fun LoginScreen(
     onSignUpClick: () -> Unit = {},
     onLoginSuccess: () -> Unit = {},
+    onGoogleClick: () -> Unit = {},
     viewModel: AuthViewModel = viewModel()
 ) {
 
@@ -197,21 +199,9 @@ fun LoginScreen(
 
         Spacer(Modifier.height(24.dp))
 
-        OutlinedButton(
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(10.dp),
-            enabled = !isLoading
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.google),
-                contentDescription = "Google icon",
-                tint = black
-            )
-            Spacer(Modifier.width(8.dp))
-            Text("Continue with Google")
-        }
+        GoogleButton(
+            enabled = !isLoading,
+            onClick = onGoogleClick
+        )
     }
 }
