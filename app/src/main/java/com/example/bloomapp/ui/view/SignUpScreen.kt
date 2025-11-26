@@ -1,4 +1,4 @@
-package com.example.ui
+package com.example.bloomapp.ui.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +21,7 @@ import com.example.bloomapp.ui.theme.black
 import com.example.bloomapp.ui.theme.green
 import com.example.bloomapp.ui.theme.grey
 import com.example.bloomapp.ui.viewmodel.AuthViewModel
-import com.example.ui.components.GoogleButton
+import com.example.bloomapp.ui.components.GoogleButton
 
 @Composable
 fun SignUpScreen(
@@ -60,7 +60,7 @@ fun SignUpScreen(
                 .width(350.dp)
                 .height(50.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFFF3F4F6)),
+                .background(Color(0xFFFFFFFF)),
             contentAlignment = Alignment.Center
         ) {
             Row(
@@ -208,6 +208,21 @@ fun SignUpScreen(
                 Text("Sign Up", color = black)
             }
         }
+
+        Spacer(Modifier.height(26.dp))
+
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Divider(Modifier.weight(1f))
+            Text("  OR  ")
+            Divider(Modifier.weight(1f))
+        }
+
+        Spacer(Modifier.height(24.dp))
+
+
         GoogleButton(
             enabled = !isLoading,
             onClick = onGoogleClick

@@ -1,142 +1,128 @@
-package com.example.ui
+package com.example.bloomapp.ui.view
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import HomeTopBar
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.bloomapp.R
-import com.example.bloomapp.ui.theme.black
-import com.example.bloomapp.ui.theme.green
-import com.example.bloomapp.ui.viewmodel.AuthViewModel
-import com.google.firebase.auth.FirebaseAuth
+import com.example.bloomapp.ui.components.DrawerItem
+import com.example.bloomapp.ui.components.PlantHomeCard
+import com.example.bloomapp.ui.viewmodel.PlantsViewModel
+import kotlinx.coroutines.launch
 
+
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onLogout: () -> Unit = {},
-    viewModel: AuthViewModel = viewModel()
+    viewModel: PlantsViewModel = viewModel(),
+    onAddClick: () -> Unit,
+    onLogout: () -> Unit
 ) {
-    val currentUser = FirebaseAuth.getInstance().currentUser
-    val userEmail = currentUser?.email ?: "Utilisateur"
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    val plants = viewModel.filteredPlants()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(Modifier.height(60.dp))
-
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo",
-                modifier = Modifier.size(100.dp)
-            )
-
-            Spacer(Modifier.height(40.dp))
-
-            Text(
-                text = "Bienvenue !",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = black
-            )
-
-            Spacer(Modifier.height(16.dp))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFF3F4F6)
-                ),
-                shape = RoundedCornerShape(12.dp)
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(top = 45.dp, bottom = 25.dp)
             ) {
+                // Header du menu
                 Column(
-                    modifier = Modifier.padding(20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "Vous êtes connecté en tant que :",
-                        fontSize = 14.sp,
-                        color = Color.Gray
+                        text = "🌿 BLOOM",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Color(0xFF4CAF50)
                     )
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = userEmail,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = black
-                    )
+                    Divider()
                 }
-            }
 
-            Spacer(Modifier.height(40.dp))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = green.copy(alpha = 0.1f)
-                ),
-                shape = RoundedCornerShape(12.dp)
-            ) {
+                // Items du menu
                 Column(
-                    modifier = Modifier.padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text(
-                        text = "✓",
-                        fontSize = 48.sp,
-                        color = green
-                    )
-                    Spacer(Modifier.height(16.dp))
-                    Text(
-                        text = "Authentification réussie",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = black
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = "Vous avez accès à l'application",
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
+                    DrawerItem("Mes Plantes") {
+                        scope.launch { drawerState.close() }
+                    }
+                    DrawerItem("Ajouter une Plante") {
+                        onAddClick()
+                        scope.launch { drawerState.close() }
+                    }
+                    DrawerItem("Paramètres") {
+                        // TODO: gérer paramètres
+                        scope.launch { drawerState.close() }
+                    }
+
+                    Spacer(Modifier.weight(1f)) // pousse le logout en bas
+
+                    Divider()
+
+                    DrawerItem("Déconnexion", color = Color.Red) {
+                        onLogout()
+                    }
                 }
             }
         }
-
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Button(
-                onClick = {
-                    FirebaseAuth.getInstance().signOut()
-                    onLogout()
-                },
+    ) {
+        Scaffold(
+            topBar = {
+                HomeTopBar(
+                    onMenuClick = {
+                        scope.launch {
+                            if (drawerState.isClosed) drawerState.open()
+                            else drawerState.close()
+                        }
+                    }
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = onAddClick,
+                    containerColor = Color(0xFF4CAF50),
+                    shape = CircleShape
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "Ajouter",
+                        tint = Color.White
+                    )
+                }
+            },
+            containerColor = Color(0xFFF5F5F5)
+        ) { padding ->
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = green),
-                shape = RoundedCornerShape(10.dp)
+                    .padding(padding)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text("Se déconnecter", color = black, fontSize = 16.sp)
+                items(plants) { plant ->
+                    PlantHomeCard(plant)
+                }
             }
-
-            Spacer(Modifier.height(20.dp))
         }
     }
 }
