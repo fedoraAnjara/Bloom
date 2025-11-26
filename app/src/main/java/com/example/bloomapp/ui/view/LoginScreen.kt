@@ -1,4 +1,4 @@
-package com.example.ui
+package com.example.bloomapp.ui.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +21,7 @@ import com.example.bloomapp.ui.theme.black
 import com.example.bloomapp.ui.theme.green
 import com.example.bloomapp.ui.theme.grey
 import com.example.bloomapp.ui.viewmodel.AuthViewModel
-import com.example.ui.components.GoogleButton
+import com.example.bloomapp.ui.components.GoogleButton
 
 @Composable
 fun LoginScreen(
@@ -59,7 +59,7 @@ fun LoginScreen(
                 .width(350.dp)
                 .height(50.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFFF3F4F6)),
+                .background(Color(0xFFFFFFFF)),
             contentAlignment = Alignment.Center
         ) {
             Row(

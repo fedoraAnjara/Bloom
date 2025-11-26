@@ -1,4 +1,4 @@
-package com.example.ui.components
+package com.example.bloomapp.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

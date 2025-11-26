@@ -1,4 +1,4 @@
-package com.example.ui.components
+package com.example.bloomapp.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,7 +30,7 @@ fun GoogleButton(
             tint = Color.Unspecified
         )
         Spacer(Modifier.width(8.dp))
-        Text("Continue with Google")
+        Text("Continue with Google", color = black)
     }
 }
 
