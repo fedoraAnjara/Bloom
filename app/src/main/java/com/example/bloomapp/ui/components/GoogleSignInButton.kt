@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.bloomapp.R
-import com.example.bloomapp.ui.theme.black
 
 @Composable
 fun GoogleButton(
@@ -30,7 +29,11 @@ fun GoogleButton(
             tint = Color.Unspecified
         )
         Spacer(Modifier.width(8.dp))
-        Text("Continue with Google", color = black)
+        Text(
+            "Continue with Google",
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
 }
+
 

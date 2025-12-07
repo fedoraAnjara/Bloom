@@ -1,5 +1,6 @@
 [versions]
 agp = "8.13.1"
+firebaseAiLogic = "16.0.2"
 kotlin = "2.0.21"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -24,9 +25,14 @@ firebaseFirestore = "26.0.2"
 foundationLayout = "1.9.5"
 compose = "1.0.0-alpha08"
 firebaseAuthKtx = "24.0.1"
+firebaseAi = "17.6.0"
+datastoreCore = "1.2.0"
+datastorePreferencesCore = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+firebase-ai-logic = { module = "com.google.firebase:firebase-ai-logic", version.ref = "firebaseAiLogic" }
+firebase-ai-logic-image = { module = "com.google.firebase:firebase-ai-logic-image", version.ref = "firebaseAiLogic" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -55,6 +61,9 @@ firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 androidx-compose = { group = "androidx.xr.compose", name = "compose", version.ref = "compose" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+firebase-ai = { group = "com.google.firebase", name = "firebase-ai", version.ref = "firebaseAi" }
+androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastoreCore" }
+androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastorePreferencesCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.bloomapp.data.model.Plant
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,14 +29,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
 import java.util.Locale
-
-
 import android.graphics.BitmapFactory
 import android.util.Base64
 import androidx.compose.ui.graphics.asImageBitmap
 
 @Composable
-fun PlantHomeCard(plant: Plant) {
+fun PlantHomeCard(
+    plant: Plant,
+    onClick: () -> Unit = {}
+) {
     fun Plant.formattedDate(): String {
         val timestamp = this.date ?: return ""
         val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
@@ -58,6 +60,7 @@ fun PlantHomeCard(plant: Plant) {
         modifier = Modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth()
+            .clickable { onClick() }
     ) {
         Column {
             // IMAGE
@@ -111,4 +114,3 @@ fun PlantHomeCard(plant: Plant) {
         }
     }
 }
-

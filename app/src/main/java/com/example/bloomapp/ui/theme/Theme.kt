@@ -1,43 +1,44 @@
 package com.example.bloomapp.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
+// Dark mode colors
 private val DarkColorScheme = darkColorScheme(
     primary = green,
+    onPrimary = black,
     secondary = grey,
-    tertiary = Pink80
+    onSecondary = black,
+    tertiary = Pink80,
+    onTertiary = black,
+    background = Color(0xFF121212),
+    onBackground = grey,
+    surface = Color(0xFF1E1E1E),
+    onSurface = grey
 )
 
+// Light mode colors
 private val LightColorScheme = lightColorScheme(
-    primary = black,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = green,
+    onPrimary = black,
+    secondary = grey,
+    onSecondary = black,
+    tertiary = Pink80,
+    onTertiary = black,
+    background = Color(0xFFFFFFFF),
+    onBackground = black,
+    surface = grey,
+    onSurface = black
 )
 
 @Composable
 fun BloomAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false,
+    dynamicColor: Boolean = false, // Android 12+ dynamic color
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -45,7 +46,6 @@ fun BloomAppTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
